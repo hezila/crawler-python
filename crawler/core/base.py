@@ -25,6 +25,7 @@ import logging
 from core.utils import *
 
 logger = logging.getLogger('crawler.' + __name__)
+logger.setLevel(logging.DEBUG)
 
 lxml_parser = lxml.etree.HTMLParser()
 

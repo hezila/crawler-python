@@ -25,7 +25,7 @@ import logging
 
 
 logger = logging.getLogger('crawler.' + __name__)
-
+logger.setLevel(logging.DEBUG)
 
 def santitize_html(html):
     html = clean_html(html)
