@@ -1,7 +1,6 @@
 crawler-python
 ==============
 
-<<<<<<< HEAD
 crawler-python is a simple crawler fraework for collection online data from websites for **academic purpose**.
 
 ## Quick Start
@@ -17,6 +16,3 @@ crawler-python is a simple crawler fraework for collection online data from webs
 
 * [Amazon](http://www.amazon.com)
 * [Dpreviews](http://www.dpreview.com)
-=======
-a simple crawler framework
->>>>>>> 24664a7caa883892ad229133bcfdddefc688423e
