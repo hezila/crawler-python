@@ -11,6 +11,7 @@ crawler-python is a simple crawler fraework for collection online data from webs
 ## Supporting websites so far
 
 * [Yelp](http://www.yelp.com)
+  + It's better to work with goengent
 
 ## Todo
 
