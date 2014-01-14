@@ -41,7 +41,16 @@ parser.add_option("-q", "--quiet", action="store_false", dest="verbose")
 (options, args) = parser.parse_args()
 
 def main():
-    yelp_biz_ids("restaurants", "new+york")
+    """
+    Warnining: your ip would be banned by yelp if you don't use proxy
+
+    goagent proxy: https://code.google.com/p/goagent/
+    """
+    proxies = {'http': 'http://127.0.0.1:8087'}
+    #yelp_biz_ids("restaurants", "new+york", proxies)
+    
+    for biz_url in yelp_biz_ids("restaurants", "New+York", proxies):
+        print biz_url
 
 if __name__ == "__main__":
     main()

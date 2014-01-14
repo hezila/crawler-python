@@ -55,7 +55,7 @@ def parse_soup(content):
         logger.error("%d: %s" % (e.code, e.msg))
         return
 
-def get_response(url, proxy_host=None, proxy_port=None):
+def get_response(url, proxies=None):
     try:
         r = requests.get(url)
     except ValueError:

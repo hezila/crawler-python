@@ -26,29 +26,15 @@ import logging
 logger = logging.getLogger('crawler.' + __name__)
 logger.setLevel(logging.DEBUG)
 
-
-usage = "usage %prog [options] arg"
-parser = OptionParser(usage=usage)
-parser.add_option('-c', "--category", dest="category",
-                  help="the target bussiness category")
-parser.add_option("-l", "--location", dest="location",
-              help="the target location/country")
-parser.add_option("-o", "--output", dest="output_dir",
-              help="write out to DIR")
-parser.add_option("-v", "--verbose", action="store_true", dest="verbose")
-parser.add_option("-q", "--quiet", action="store_false", dest="verbose")
-
-(options, args) = parser.parse_args()
-
-
-def yelp_biz_ids(cate, loc):
+def yelp_biz_ids(cate, loc, proxies=None):
     start = 0
     step = 10
     while True:
-        url = "http://www.yelp.com/search?cflt=%s&start=%d#find_desc&find_loc=%s" % (cate, start, loc)
+        url = "http://www.yelp.com/search?cflt=%s&start=%d&find_loc=%s" % (cate, start, loc)
+
         logger.info('fetching from %s' % url)
 
-        html = get_response(url)
+        html = get_response(url, proxies)
 
         soup = parse_soup(html)
         bussiness_divs = soup.findAll('div', {'class': "search-result natural-search-result biz-listing-large"})
@@ -56,9 +42,8 @@ def yelp_biz_ids(cate, loc):
             bussiness_story = div.find('div', {'class': "media-story"})
             title_div = bussiness_story.find('h3', {"class": "search-result-title"}).find('a')
             url = 'http://www.yelp.com%s' % title_div['href']
-            title = title_div.text
-            print '%s -> %s' % (title, url)
-
+            #title = title_div.text
+            #print '%s -> %s' % (title, url)
+            yield url
         start += step
         time.sleep(5)
-        
