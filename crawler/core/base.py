@@ -18,18 +18,19 @@ You may obtain a copy of the License at
 
 import requests
 import lxml.etree
+from BeautifulSoup import BeautifulSoup
 from StringIO import StringIO
 
 import logging
 
-from core.utils import *
+from crawler.core.utils import *
 
 logger = logging.getLogger('crawler.' + __name__)
 logger.setLevel(logging.DEBUG)
 
 lxml_parser = lxml.etree.HTMLParser()
 
-def parse_html(content):
+def parse_lxml(content):
     """ from gist: https://gist.github.com/kanzure/5385691
 
     A possible safer way to parse HTML content with lxml. This will
@@ -37,26 +38,35 @@ def parse_html(content):
     """
 
     if not isinstance(content, StringIO):
-        if not isinstance(content, str) and
-            not isinstance(content, unicode):
+        if not isinstance(content, str) and not isinstance(content,
+                                                           unicode):
             raise Exception("input content must be a str or StringIO"
                             "instead of " + str(type(content)))
         content = StringIO(content)
-     lxml_tree = lxml.etree.parse(content, lxml_parser)
-     return lxml_tree
+    
+    lxml_tree = lxml.etree.parse(content, lxml_parser)
+    return lxml_tree
 
- def get_response(url, proxy_host=None, proxy_port=None):
-     try:
-         r = requests.get(url)
-     except ValueError:
-         logger.error('Url is invalid: %s' % url)
-         return
-     except requests.exceptions.ConnectionError:
-         logger.error("Error connecting to %s" % url)
-         return
+def parse_soup(content):
+    try:
+        soup = BeautifulSoup(content)
+        return soup
+    except HTTPError, e:
+        logger.error("%d: %s" % (e.code, e.msg))
+        return
 
-     if r.status_code != 200:
-         logger.error('Status code is %d on %s', (r.status_code, url))
-         return
+def get_response(url, proxy_host=None, proxy_port=None):
+    try:
+        r = requests.get(url)
+    except ValueError:
+        logger.error('Url is invalid: %s' % url)
+        return
+    except requests.exceptions.ConnectionError:
+        logger.error("Error connecting to %s" % url)
+        return
 
-     return r.content
+    if r.status_code != 200:
+        logger.error('Status code is %d on %s', (r.status_code, url))
+        return
+
+    return r.content

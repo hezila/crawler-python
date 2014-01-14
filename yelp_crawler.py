@@ -16,26 +16,32 @@ You may obtain a copy of the License at
     limitations under the License.
 '''
 
-import os, sys, re
+from crawler.contrib.yelp import *
 
-from lxml.html.clean import clean_html
-from lxml.html.soupparser import fromstring
+from optparse import OptionParser
 
+import time
 import logging
-
 
 logger = logging.getLogger('crawler.' + __name__)
 logger.setLevel(logging.DEBUG)
 
-def santitize_html(html):
-    html = clean_html(html)
-    return html
 
-def remove_script(data):
-    p = re.compile(r'<script .*?>.*?</script>')
-    return p.sub(' ', data)
+usage = "usage %prog [options] arg"
+parser = OptionParser(usage=usage)
+parser.add_option('-c', "--category", dest="category",
+                  help="the target bussiness category")
+parser.add_option("-l", "--location", dest="location",
+              help="the target location/country")
+parser.add_option("-o", "--output", dest="output_dir",
+              help="write out to DIR")
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose")
+parser.add_option("-q", "--quiet", action="store_false", dest="verbose")
 
-def remove_style(data):
-    p = re.compile(r'<style .*?>.*?</style>')
-    return p.sub(' ', data)
+(options, args) = parser.parse_args()
 
+def main():
+    yelp_biz_ids("restaurants", "new+york")
+
+if __name__ == "__main__":
+    main()
