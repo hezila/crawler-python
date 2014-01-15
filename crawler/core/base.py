@@ -18,6 +18,7 @@ You may obtain a copy of the License at
 
 import requests
 import lxml.etree
+from urllib2 import HTTPError
 from BeautifulSoup import BeautifulSoup
 from StringIO import StringIO
 
@@ -57,7 +58,7 @@ def parse_soup(content):
 
 def get_response(url, proxies=None):
     try:
-        r = requests.get(url)
+        r = requests.get(url, proxies=proxies)
     except ValueError:
         logger.error('Url is invalid: %s' % url)
         return
@@ -70,3 +71,7 @@ def get_response(url, proxies=None):
         return
 
     return r.content
+
+def get_soup(url, proxies):
+    html = get_response(url, proxies)
+    return parse_soup(html)

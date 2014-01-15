@@ -21,6 +21,7 @@ from crawler.contrib.yelp import *
 from optparse import OptionParser
 
 import time
+import pprint
 import logging
 
 logger = logging.getLogger('crawler.' + __name__)
@@ -46,11 +47,13 @@ def main():
 
     goagent proxy: https://code.google.com/p/goagent/
     """
-    proxies = {'http': 'http://127.0.0.1:8087'}
+    proxies = {'http': 'http://127.0.0.1:8087', 'https': 'https://127.0.0.1:8087'}
     #yelp_biz_ids("restaurants", "new+york", proxies)
     
     for biz_url in yelp_biz_ids("restaurants", "New+York", proxies):
         print biz_url
+        biz = yelp_biz(biz_url, proxies)
+        pprint.pprint(biz)
 
 if __name__ == "__main__":
     main()
