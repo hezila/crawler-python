@@ -18,8 +18,6 @@ You may obtain a copy of the License at
 
 from crawler.core.base import *
 
-from optparse import OptionParser
-
 import time
 import logging
 
