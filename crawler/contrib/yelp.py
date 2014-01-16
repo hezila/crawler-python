@@ -110,13 +110,13 @@ def yelp_biz(biz_url, proxies=None):
     reviews_div = soup.find('div', {'class': "review-container"})
     reviews = reviews_in_page(reviews_div)
 
-    # for page in xrange(1, pages + 1):
-    #     start = page * 40
-    #     rurl = '%s&start=%d' % (biz_url, start)
+    for page in xrange(1, pages + 1):
+        start = page * 40
+        rurl = '%s&start=%d' % (biz_url, start)
         
-    #     page = get_soup(rurl, proxies).find('div', {'class': "review-container"})
-    #     for r in reviews_in_page(page):
-    #         reviews.append(r)
+        page = get_soup(rurl, proxies).find('div', {'class': "review-container"})
+        for r in reviews_in_page(page):
+            reviews.append(r)
     biz['reviews'] = reviews
 
     return biz
