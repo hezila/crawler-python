@@ -21,7 +21,8 @@ from crawler.core.base import *
 import time
 import logging
 
-logger = logging.getLogger('crawler.' + __name__)
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
 def yelp_biz_ids(cate, loc, proxies=None):
@@ -33,6 +34,9 @@ def yelp_biz_ids(cate, loc, proxies=None):
         logger.info('fetching from %s' % url)
 
         html = get_response(url, proxies)
+        if not html:
+            logger.info('canot fetch %s' % url)
+            return
         soup = parse_soup(html)
         
         bussiness_divs = soup.findAll('div', {'class': "search-result natural-search-result biz-listing-large"})

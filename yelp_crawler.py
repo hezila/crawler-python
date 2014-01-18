@@ -24,7 +24,8 @@ import time
 import pprint
 import logging
 
-logger = logging.getLogger('crawler.' + __name__)
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
 
@@ -46,12 +47,16 @@ def main():
     Warnining: your ip would be banned by yelp if you don't use proxy
 
     goagent proxy: https://code.google.com/p/goagent/
+    http://www.hidemyass.com/proxy-list/
+
     """
-    proxies = {'http': 'http://127.0.0.1:8087', 'https': 'https://127.0.0.1:8087'}
+
+
+    #proxies = {'http': 'http://113.99.168.60:1080', 'https': 'https://127.0.0.1:8087'}
+    proxies = {'http': 'socks5://71.235.242.33:38626'}
     #yelp_biz_ids("restaurants", "new+york", proxies)
     
     for biz_url in yelp_biz_ids("restaurants", "New+York", proxies):
-        print biz_url
         biz = yelp_biz(biz_url, proxies)
         pprint.pprint(biz)
 
