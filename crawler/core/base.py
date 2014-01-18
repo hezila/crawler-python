@@ -66,14 +66,28 @@ def parse_soup(content):
         logger.error("%d: %s" % (e.code, e.msg))
         return
 
-
-def get_response(url, proxies=None, socks_proxy=None):
+def get_response(url, proxies=None):
     try:
-        if socks_proxy:
-            session.proxies = socks_proxy
-            r = session.get(url)
-        else:
-            r = requests.get(url, proxies=proxies)
+        if proxies:
+            if url.startswith('http:') and 'http' in proxies:
+                prox = proxies['http']
+                if prox.startswith('socks'):
+                    session.proxies = proxies
+                    r = session.get(url)
+                else:  # http proxy
+                    r = requests.get(url, proxies)
+            elif url.startswith('https:') and 'https' in proxies:
+                prox = proxies['https']
+                if prox.startswith('socks'):
+                    session.proxies = proxies
+                    r = session.get(url)
+                else:
+                    r = requests.get(url, proxies)
+            else:  # ohter types of requests, e.g., ftp
+                r = requests.get(url, proxies)
+
+        else:  # without proxy
+            r = requests.get(url)
     except ValueError:
         logger.error('Url is invalid: %s' % url)
         return
