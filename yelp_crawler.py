@@ -52,8 +52,8 @@ def main():
     """
 
 
-    #proxies = {'http': 'http://113.99.168.60:1080', 'https': 'https://127.0.0.1:8087'}
-    proxies = {'http': 'socks5://71.235.242.33:38626'}
+    proxies = {'http': 'http://23.244.180.162:8089', 'https': 'http://23.244.180.162:8089'}
+    #proxies = {'http': 'socks5://71.235.242.33:38626'}
     #yelp_biz_ids("restaurants", "new+york", proxies)
     
     for biz_url in yelp_biz_ids("restaurants", "New+York", proxies):

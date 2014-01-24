@@ -23,7 +23,7 @@ import requests
 import requesocks
 import lxml.etree
 from urllib2 import HTTPError
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, NavigableString, Tag
 from StringIO import StringIO
 
 import logging
@@ -75,16 +75,16 @@ def get_response(url, proxies=None):
                     session.proxies = proxies
                     r = session.get(url)
                 else:  # http proxy
-                    r = requests.get(url, proxies)
+                    r = requests.get(url, proxies = proxies)
             elif url.startswith('https:') and 'https' in proxies:
                 prox = proxies['https']
                 if prox.startswith('socks'):
                     session.proxies = proxies
                     r = session.get(url)
                 else:
-                    r = requests.get(url, proxies)
+                    r = requests.get(url, proxies = proxies)
             else:  # ohter types of requests, e.g., ftp
-                r = requests.get(url, proxies)
+                r = requests.get(url, proxies = proxies)
 
         else:  # without proxy
             r = requests.get(url)

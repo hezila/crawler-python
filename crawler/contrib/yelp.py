@@ -60,6 +60,8 @@ def yelp_biz(biz_url, proxies=None):
 
     soup = get_soup(biz_url, proxies)
 
+
+
     top_self_div = soup.find('div', {'class': "top-shelf"})
 
     title_div = top_self_div.find('h1', {'itemprop': "name"})
@@ -94,7 +96,7 @@ def yelp_biz(biz_url, proxies=None):
         address[key] = value
     biz['address'] = address
 
-    action_url = soup.find('ul', {'class': 'action-link-list'}).find('a')['href']
+    action_url = soup.find('ul', {'class': 'iconed-list action-link-list'}).find('a')['href']
 
     biz_id = action_url.split('&')[0].split('=')[-1]
     
@@ -109,14 +111,17 @@ def yelp_biz(biz_url, proxies=None):
     reviews_page_div = soup.find('div', {'class': "page-of-pages"})
     pages = int(reviews_page_div.text.split()[-1])
 
-    reviews_div = soup.find('div', {'class': "review-container"})
+    reviews_div = soup.find('div', {'class': "review-list"})
+
     reviews = reviews_in_page(reviews_div)
 
     for page in xrange(1, pages + 1):
         start = page * 40
+
         rurl = '%s&start=%d' % (biz_url, start)
+        print 'review url: %s' % rurl
         
-        page = get_soup(rurl, proxies).find('div', {'class': "review-container"})
+        page = get_soup(rurl, proxies).find('div', {'class': "review-list"})
         for r in reviews_in_page(page):
             reviews.append(r)
     biz['reviews'] = reviews
@@ -124,9 +129,10 @@ def yelp_biz(biz_url, proxies=None):
     return biz
 
 def reviews_in_page(soup):
+
     reviews = []
 
-    for review_div in soup.findAll("li", {'class': 'review'}):
+    for review_div in soup.findAll("div", {'class': 'review review-with-no-actions'}):
         review = {}
 
         passport_info_ul = review_div.find(
@@ -188,7 +194,7 @@ def reviews_in_page(soup):
 
                 next = br.nextSibling
                 
-                if not (next and isinstance(next,NavigableString)):
+                if not (next and isinstance(next, NavigableString)):
                     continue
                 ps.append(next.strip().encode('ascii', 'ignore'))
 
