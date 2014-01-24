@@ -33,3 +33,4 @@ crawler-python is a simple crawler fraework for collection online data from webs
 
 * [Free Proxy - Cyberghost](https://cyberhostvpn.com)
 * [ProxyNova website](http://www.proxynova.com/)
+* [Proxy list](http://www.cnproxy.com/)
