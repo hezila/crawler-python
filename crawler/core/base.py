@@ -102,6 +102,6 @@ def get_response(url, proxies=None):
     return r.content
 
 
-def get_soup(url, proxies):
+def get_soup(url, proxies=None):
     html = get_response(url, proxies)
     return parse_soup(html)

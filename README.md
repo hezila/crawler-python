@@ -28,6 +28,12 @@ crawler-python is a simple crawler fraework for collection online data from webs
 ## Available proxy list
 
 + http://23.244.180.162:8089 (2014-01-24)
++ 192.3.25.99:7808
++ 204.236.154.194:3128
++ 202.187.160.140:3128
++ 220.181.26.98:80
++ 218.248.7.18:8080
+
 
 ## Others
 
