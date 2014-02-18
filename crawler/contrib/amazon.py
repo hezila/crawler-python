@@ -122,6 +122,22 @@ def amazon_camera(prd_id, proxies=None):
     
     return prd
 
+def amazon_prd_img(prd_id, target_dir=".", proxies=None):
+    prd_url = "http://www.amazon.com/dp/" + prd_id
+    logger.info("fetch picture from %s" % prd_url)
+    prd_soup = get_soup(prd_url, proxies)
+
+    img_container = prd_soup.find("div", {"id": "main-image-container"})
+
+    img_container = img_container.find('div', {"id": "imgTagWrapperId"})
+
+    image = img_container.find('img')
+
+    data = get_response(image['src'], proxies)
+    save = open(os.path.join(target_dir, prd_id) + '.jpg', 'wb')
+    save.write(data)
+    save.close()
+
 def amazon_reviews(prd_id, proxies):
     prd_reviews = []
     base_review_url = "http://www.amazon.com/product-reviews/" + prd_id + "/?ie=UTF8&showViewpoints=0&pageNumber=" + "%s" + "&sortBy=bySubmissionDateDescending"

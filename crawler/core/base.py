@@ -66,6 +66,10 @@ def parse_soup(content):
         logger.error("%d: %s" % (e.code, e.msg))
         return
 
+def get_data(url, proxies=None):
+    data = requests.get(url).read()
+    return data
+
 def get_response(url, proxies=None):
     try:
         if proxies:

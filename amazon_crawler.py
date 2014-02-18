@@ -44,6 +44,8 @@ def main():
 
     proxies = {'http': 'http://23.244.180.162:8089', 'https': 'http://23.244.180.162:8089'}
 
+    socket_proxies = {'http': 'http://1.ss.shadowsocks.net:65535', 'https': 'http://23.244.180.162:8089'}
+
     # laptop seed url
     #seed_url = "http://www.amazon.com/s/ref=sr_nr_p_n_feature_eighteen_0?rh=n%3A172282%2Cn%3A%21493964%2Cn%3A541966%2Cn%3A565108%2Cp_n_feature_eighteen_browse-bin%3A6819965011&bbn=565108&ie=UTF8&qid=1381818929&rnid=6819964011"
     
@@ -52,7 +54,8 @@ def main():
 
     #print amazon_camera("B00EFILPHA", proxies)
 
-    print amazon_reviews("B00EFILPHA", proxies)
+    #print amazon_reviews("B00EFILPHA", proxies)
+    amazon_prd_img("B00EFILPHA")
    
 if __name__ == "__main__":
     main()
