@@ -60,7 +60,7 @@ def parse_lxml(content):
 
 def parse_soup(content):
     try:
-        soup = BeautifulSoup(content)
+        soup = BeautifulSoup(content, convertEntities=BeautifulSoup.HTML_ENTITIES)
         return soup
     except HTTPError, e:
         logger.error("%d: %s" % (e.code, e.msg))
