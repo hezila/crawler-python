@@ -29,8 +29,6 @@ def dp_specs(spec_url, proxies=None):
     soup = get_soup(spec_url, proxies)
 
     specs_div = soup.find('div', {"class": "specificationsPage"})
-        #product['dpreview_techs_html'] = str(specs_div)
-        #spec_titles = [item.getText() for item in specs_div.findAll('thread')]
     if specs_div is None:
         return None
     hds_items = specs_div.findAll('thead')
