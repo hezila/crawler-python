@@ -34,23 +34,23 @@ def dp_specs(spec_url, proxies=None):
     hds_items = specs_div.findAll('thead')
     specs_items = specs_div.findAll('tbody')
 
-    techs = {}
+    techs = []
     for i, item in enumerate(hds_items):
         inner_item = specs_items[i]
         key = ""
         if item.find('th'):
             key = item.find('th').getText()
-            techs[key] = []
+            
         else:
             continue
-
+        tech_items = []
         for spec in inner_item.findAll('tr'):
-            tech = {}
             if spec.find('th'):
                 title = spec.find('th', {"class": "label"}).getText()
                 value = unicode(spec.find('td', {"class": "value"})).encode('ascii', 'ignore')
 
                 tech = (title, value)
-                techs[key].append(tech)
+                tech_items.append(tech)
+        techs.append((key, tech_items))
 
     return techs
