@@ -12,13 +12,14 @@ crawler-python is a simple crawler framework for collection online data from web
 
 * [Yelp](http://www.yelp.com)
   + It's better to work with goengent (Oops, yelp blocks it)
+  + [amazon](http://www.amazon.com)
+  + [gdgt](http://www.gdgt.com)
+
 
 ## Future websites
 
-* [amazon](http://www.amazon.com)
-* [dpreviews](http://www.dpreview.com)
-* [gdgt](http://www.gdgt.com)
 * [buzzillion](http://www.buzzillions.com/)
+* [dpreviews](http://www.dpreview.com)
 * [sina_weibo](http://www.weibo.com)
 
 ## TODO
