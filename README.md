@@ -1,7 +1,7 @@
 crawler-python
 ==============
 
-crawler-python is a simple crawler fraework for collection online data from websites for **academic purpose**.
+crawler-python is a simple crawler framework for collection online data from websites for **academic purpose**.
 
 ## Quick Start
 

@@ -54,18 +54,18 @@ def main():
 
     #print amazon_camera("B00EFILPHA", proxies)
 
-    #print amazon_reviews("B00EFILPHA", proxies)
+    print amazon_reviews("B00EFILPHA")
     # amazon_prd_img("B00EFILPHA", "images")
 
-    for dirname, dirnames, filenames in os.walk('D:\workspace\camera\small'):
-        for filename in filenames:
-            file_path = os.path.join(dirname, filename)
+    #for dirname, dirnames, filenames in os.walk('D:\workspace\camera\small'):
+    #    for filename in filenames:
+    #        file_path = os.path.join(dirname, filename)
             
-            pid = filename[:-5]
-            if not os.path.isfile(os.path.join("D:\workspace\camera\images", pid) + ".jpg"):
-                amazon_prd_img(pid, "D:\workspace\camera\images")
+    #        pid = filename[:-5]
+    #        if not os.path.isfile(os.path.join("D:\workspace\camera\images", pid) + ".jpg"):
+    #            amazon_prd_img(pid, "D:\workspace\camera\images")
 
-            print pid
+     #       print pid
    
 if __name__ == "__main__":
     main()

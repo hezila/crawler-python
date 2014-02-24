@@ -138,7 +138,7 @@ def amazon_prd_img(prd_id, target_dir=".", proxies=None):
     save.write(data)
     save.close()
 
-def amazon_reviews(prd_id, proxies):
+def amazon_reviews(prd_id, proxies=None):
     prd_reviews = []
     base_review_url = "http://www.amazon.com/product-reviews/" + prd_id + "/?ie=UTF8&showViewpoints=0&pageNumber=" + "%s" + "&sortBy=bySubmissionDateDescending"
 
@@ -159,13 +159,19 @@ def amazon_reviews(prd_id, proxies):
 
         pagn_bar = revs_soup.find("span", {"class": "paging"})
         pagn_bar_str = str(pagn_bar)
+        #print pagn_bar_str
+        # before: Oct, 2013
+        #mch = re.search(r"cm_cr_pr_top_link_next_([0-9]+)", pagn_bar_str)
 
-        mch = re.search(r"cm_cr_pr_top_link_next_([0-9]+)", pagn_bar_str)
+        # modified on: 24th, Feb 2014
+        mch = re.search(r"pageNumber=([0-9]+)\">Next", pagn_bar_str)
 
         if mch is None:
             break
+        
         if len(mch.groups()) > 0:
             pagn = mch.group(1)
+            print pagn
             revs_soup.decompose()
         else:
             revs_soup.decompose()
@@ -181,25 +187,27 @@ def extract_reviews(data, pid):
 
     table_reg = re.compile(r"<table id=\"productReviews.*?>(.*)</table>")
     table_match = table_reg.search(data)
+
     if table_match:
         table_cont = table_match.group(1)
-        review_reg = re.compile(r"-->(.*?)(!--|$)")
+        # before Oct 2013
+        #review_reg = re.compile(r"-->(.*?)(!--|$)")
+
+        # modified on 24th, Feb 2014
+        review_reg = re.compile(r"<div style=\"margin-left:0.5em;\">(.*?)</div> <!-- ")
         review_matches = review_reg.findall(table_cont)
         if len(review_matches) > 0:
-            # print "Review Number: ", len(review_matches)
+            #print "Review Number: ", len(review_matches)
             review_num = 0
-            for index, review_match in enumerate(review_matches):
+            for index, block in enumerate(review_matches):
                 review = {}
-                block = review_match[0]
-
-                end = review_match[1]
 
                 help_reg = re.compile(
-                    r"\> \<div.*?style=.*?\> ([\d]+) of ([\d]+) people found the following review helpful \<\/div\> \<")
+                    r"<div style=\"margin-bottom:0.5em;\"> ([\d]+) of ([\d]+) people found the following review helpful </div>")
                 help_match = help_reg.search(block)
+
                 if help_match:
-                    # print "HELP: " + help_match.group(1) + " of " +
-                    # help_match.group(2)
+                    #print "HELP: " + help_match.group(1) + " of " + help_match.group(2)
                     review["helpful_votes"] = int(help_match.group(1))
                     review["total_votes"] = int(help_match.group(2))
 
@@ -209,7 +217,7 @@ def extract_reviews(data, pid):
                 if block_match:
                     review_num += 1
                     rating = block_match.group(1) + block_match.group(2)
-                    # print "Rating:\t" + rating
+                    print "Rating:\t" + rating
                     review["overall_rating"] = float(rating)/10.0
 
                     title = block_match.group(3)
@@ -284,12 +292,12 @@ def extract_reviews(data, pid):
                         else:
                             review["purchased"] = 0
 
-                        text = remove_cont_withtags(block)
+                        #text = remove_cont_withtags(block)
+                        cont_reg = re.compile(r"<div class=\"reviewText\">(.*?)</div>")
+                        content = cont_reg.search(block).group(1)
 
-                        
-
-                        # print "Text:\t" + text
-                        review["content"] = text.strip(' \t\n\r')
+                        #print "Text:\t" + content
+                        review["content"] = content.strip(' \t\n\r')
                         # print
                     else:
                         print "Oops 4: " + date
@@ -297,8 +305,8 @@ def extract_reviews(data, pid):
                 else:
                     print "Oops 3: " + str(index)
                     
-                print "Oops 3.0: " + str(index)
-                print review
+                #print "Oops 3.0: " + str(index)
+                #print review
 
                 review["product_id"] = pid
 
