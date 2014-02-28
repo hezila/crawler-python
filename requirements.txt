@@ -1,4 +1,4 @@
 requests
-requessocks
+requesocks
 beautifulsoup
 lxml
