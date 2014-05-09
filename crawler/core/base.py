@@ -23,7 +23,7 @@ import requests
 import requesocks
 import lxml.etree
 from urllib2 import HTTPError
-from BeautifulSoup import BeautifulSoup, NavigableString, Tag
+from bs4 import BeautifulSoup, NavigableString, Tag
 from StringIO import StringIO
 
 import logging
@@ -60,7 +60,7 @@ def parse_lxml(content):
 
 def parse_soup(content):
     try:
-        soup = BeautifulSoup(content, convertEntities=BeautifulSoup.HTML_ENTITIES)
+        soup = BeautifulSoup(content, "lxml")
         return soup
     except HTTPError, e:
         logger.error("%d: %s" % (e.code, e.msg))
