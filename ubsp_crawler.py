@@ -43,8 +43,10 @@ parser.add_option("-q", "--quiet", action="store_false", dest="verbose")
 (options, args) = parser.parse_args()
 
 def main():
-    for url in chain_restaurants():
-        print url
+    for name, url in chain_restaurants():
+        print 'chain %s with url: %s' % (name, url)
+        for sub_url in restaurants_of_chain(url):
+            print '\t%s' % sub_url
 
 
 if __name__ == "__main__":

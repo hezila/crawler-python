@@ -18,7 +18,7 @@ You may obtain a copy of the License at
 
 from crawler.core.base import *
 
-import time
+import time, re
 import logging
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,8 @@ city_codes = {
     }
 
 BASE_URL = "http://www.urbanspoon.com/"
+
+name_pattern = re.compile(r"(.*?)\([\d]+\)")
     
 def chain_restaurants(city_name="new_york", proxies=None):
     city_code = city_codes[city_name]
@@ -46,6 +48,20 @@ def chain_restaurants(city_name="new_york", proxies=None):
         restaurant = item.find('a')
 
         name = restaurant.string.encode('ascii', 'ignore')
+        name_match = name_pattern.search(name)
+        name = name_match.group(1)
         url = restaurant['href']
-        yield url
+        yield name, url
 
+def restaurants_of_chain(chain_url, proxies=None):
+    html = get_response(chain_url, proxies)
+    if not html:
+        logger.error('cannot fetch %s' % chain_url)
+        return
+    soup = parse_soup(html)
+
+    restaurant_list = soup.find_all('div', {'class': 'details'})
+    for rst_item in restaurant_list:
+        url = rst_item.find('a', {'class': 'resto_name'})['href']
+        yield BASE_URL +  url
+        
